@@ -2,14 +2,13 @@
   General
 ------------------*/
 body {
-    background-color: #fefefe;
+    background-color: #FFA0B3;
     font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
     font-size: 16px;
     line-height: 1.5em;
     color: #cecece;
-    background-color: #ffffff;
 }
 a {
     text-decoration: none;
@@ -18,10 +17,11 @@ a:hover {
     text-decoration: underline;
 }
 #wrapper{
+    border-radius: 25px;
     padding: 20px;
-    margin: 10px auto;
+    margin: 50px auto;
     max-width: 1000px;
-    background-color: #333333;
+    background-color: #492E63;
 }
 
 /*----------------
@@ -69,7 +69,7 @@ button {
   }
 
 .clearButton {
-    background-color: #99DDEE;
+    background-color: #C5B0D3;
     color: #105062;
     float: left;
 }

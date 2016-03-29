@@ -5,13 +5,20 @@
 //html elements
 var drawingCanvas;
 var saveButton;
+var clearButton;
 var brushPicker;
 
 //values saved from html elements
 var colorPicker;
 var brushSize;
 var brushType;
+var bgColor = "white";
 
+var bow;
+
+function preload(){
+  bow = loadImage("images/bow_pink.png");
+}
 
 function setup() {
 
@@ -32,16 +39,18 @@ function setup() {
     saveButton.mouseClicked(saveFunction);
 
     //TASK: set up the clear button
-
+    clearButton = select('.clearButton');
+    clearButton.mouseClicked(clearFunction);
 
     //set up the brush types
     brushPicker = createSelect();
     brushPicker.parent("brushType")
 
     brushPicker.option('paint brush');
-    //TASK: add paint bucket option
-    //TASK: add eraser option
-    //TASK: add two new brush options
+    brushPicker.option('paint bucket');
+    brushPicker.option('eraser');
+    brushPicker.option('circle');
+    brushPicker.option('bow');
 
     //Set up the brush type event listener:
     brushPicker.changed(changeBrush);
@@ -54,11 +63,21 @@ function setup() {
 function draw() {
 
     if (mouseIsPressed) {
-        if (brushType == "paint brush"){
-            standardStroke();
-        }
-        //add your other brush options here using else if
-
+      if (brushType == "paint brush"){
+          standardStroke();
+      }
+      else if (brushType == "paint bucket") {
+          paintBucket();
+      }
+      else if (brushType == "eraser") {
+          eraserStroke();
+      }
+      else if (brushType == "circle") {
+          ellipseStroke();
+      }
+      else if (brushType == "bow") {
+          drawIMG();
+      }
     } else {
         //Cursor options: ARROW, CROSS, HAND, MOVE, TEXT, or WAIT, or path for image
         //if you use an image, the recommended size is 16x16 or 32x32 pixels
@@ -71,25 +90,23 @@ function draw() {
 //--------------------------
 
 function standardStroke(){
-    //set the size of the brush from the slider
-    strokeWeight(brushSize.value());
-
-    //use the hex code for the stroke color
-    stroke("#"+colorPicker.value());
-    //If you want to use the RGB values instead you can do so like this:
-    //(useful if you want to add opacity with RGBA)
-    // stroke(colorPicker.elt.color.rgb[0]*255,
-    //         colorPicker.elt.color.rgb[1]*255,
-    //         colorPicker.elt.color.rgb[2]*255
-    //         );
-
-    //pmouseX and pmouseY give you the previous mouse position
-    line(pmouseX, pmouseY, mouseX, mouseY);
-
+  strokeWeight(brushSize.value());
+  stroke("#"+colorPicker.value());
+  line(pmouseX, pmouseY, mouseX, mouseY);
 }
-
-//TASK: set up a paint bucket, eraser, and two new brushes
-//each one should have its own function
+function eraserStroke(){
+  strokeWeight(brushSize.value());
+  stroke(bgColor);
+  line(pmouseX, pmouseY, mouseX, mouseY);
+}
+function paintBucket(){
+  background("#"+colorPicker.value());
+}
+function ellipseStroke(){
+  fill("#"+colorPicker.value());
+  strokeWeight(brushSize.value());
+  stroke("#"+colorPicker.value());
+  ellipse(mouseX, mouseY, 25, 25);}
 
 //--------------------------
 // Event Listeners
@@ -102,8 +119,18 @@ function changeBrush(){
     brushType = brushPicker.value();
 }
 
+function drawIMG(){
+  size = brushSize.value();
+  image(bow, mouseX-size,mouseY-size, size*2,size*2);
+}
+
 function saveFunction() {
     save(drawingCanvas, "myDrawing.jpg");
+}
+
+function clearFunction() {
+  clear(drawingCanvas);
+  background(bgColor);
 }
 
 //TASK: set up clear button function
